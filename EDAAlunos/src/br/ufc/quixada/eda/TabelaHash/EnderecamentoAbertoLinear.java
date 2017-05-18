@@ -1,24 +1,22 @@
 package br.ufc.quixada.eda.TabelaHash;
 
 public class EnderecamentoAbertoLinear<T> extends Hash<T>{
-	Integer k = 0;
-	Integer tabela[];
+	private NoHash<T> tabela[];
 	
 	protected EnderecamentoAbertoLinear(int tam) {
 		super(tam);
-		this.tabela = new Integer[tam];
+		this.tabela = new NoHash[this.m];
 	}
 	
-	protected Integer ffHash(Integer x){
-		return (x + this.k) % m;
+	protected Integer ffHash(Integer x, Integer k){
+		return (fHash(x) + k) % m;
 	}
 
 	@Override
-	protected void inserir(Integer x, T valor) {
-		for (k = 0; k < m; k++){
-			int ind = ffHash(x);
-			if(tabela[ind] == null){
-				tabela[ind] = x;
+	protected void inserir(Integer chave, T valor) {
+		for (int k = 0; k < tabela.length; k++){
+			if (tabela[ffHash(chave, k)] == null){
+				tabela[ffHash(chave, k)] = new NoHash<>(chave, valor);
 				return;
 			}
 		}
@@ -26,25 +24,21 @@ public class EnderecamentoAbertoLinear<T> extends Hash<T>{
 
 	@Override
 	protected T buscar(Integer chave) {
-		for (k = 0; k < m; k++){
-			int ind = ffHash(chave);
-			if (tabela[ind] != null && tabela[ind] == chave){
-				return (T) tabela[ind];
-			}
-			if (tabela[ind] == null){
-				return null;
+		for (int k = 0; k < m; k++){
+			if(tabela[ffHash(chave, k)].getChave() == chave){
+				return tabela[ffHash(chave, k)].getValor();
 			}
 		}
 		return null;
 	}
 
 	@Override
-	protected T remover(Integer x) {
-		for (k = 0; k < m; k++){
-			int ind = ffHash(x);
-			if(tabela[ind] == null){
-				T aux = (T) tabela[ind];
-				tabela[ind] = null;
+	protected T remover(Integer chave) {
+		for (int k = 0; k < m; k++){
+			if (tabela[ffHash(chave, k)].getChave() == chave){
+				T aux = tabela[ffHash(chave, k)].getValor();
+				tabela[ffHash(chave, k)].setChave(null);
+				tabela[ffHash(chave, k)].setValor(null);
 				return aux;
 			}
 		}
