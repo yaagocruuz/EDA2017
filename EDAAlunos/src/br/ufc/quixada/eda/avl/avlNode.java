@@ -1,45 +1,56 @@
 package br.ufc.quixada.eda.avl;
 
-public class avlNode {
-	private avlNode left, right;
-	private int height, key;
+public class avlNode <T, Info> {
 	
-	public avlNode(int key){
-		this.left = null;
-		this.right = null;
-		this.height = 1;
-		this.key = key;
+	private T valor;
+	private int altura;
+	private avlNode<T, Info> direito;
+	private avlNode<T, Info> esquerdo;
+	private Info infor;
+	
+	public avlNode(T valor) {
+		this.valor = valor;
+		this.setAltura(1);
 	}
 
-	public avlNode getLeft() {
-		return left;
+	public T getValor() {
+		return valor;
 	}
 
-	public void setLeft(avlNode left) {
-		this.left = left;
+	public void setValor(T valor) {
+		this.valor = valor;
 	}
 
-	public avlNode getRight() {
-		return right;
+	public int getAltura() {
+		return altura;
 	}
 
-	public void setRight(avlNode right) {
-		this.right = right;
+	public void setAltura(int altura) {
+		this.altura = altura;
 	}
 
-	public int getHeight() {
-		return height;
+	public avlNode<T, Info> getDireito() {
+		return direito;
 	}
 
-	public void setHeight(int height) {
-		this.height = height;
+	public void setDireito(avlNode<T, Info> direito) {
+		this.direito = direito;
 	}
 
-	public int getKey() {
-		return key;
+	public avlNode<T, Info> getEsquerdo() {
+		return esquerdo;
 	}
 
-	public void setKey(int key) {
-		this.key = key;
+	public void setEsquerdo(avlNode<T, Info> esquerdo) {
+		this.esquerdo = esquerdo;
 	}
+
+	public Info getInfor() {
+		return infor;
+	}
+
+	public void setInfor(Info infor) {
+		this.infor = infor;
+	}
+		
 }
