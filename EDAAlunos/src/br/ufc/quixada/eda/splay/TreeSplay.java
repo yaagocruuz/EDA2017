@@ -1,74 +1,89 @@
 package br.ufc.quixada.eda.splay;
 
-public class TreeSplay<T> {
-	private NodeSplay<T> root;
-
-	private NodeSplay<T> leftRotation(NodeSplay<T> node){
-		NodeSplay<T> aux = node.getRight();
-		node.setRight(aux.getLeft());
-		aux.setLeft(node);
-		return aux;
-	}
-
-	private NodeSplay<T> rightRotation(NodeSplay<T> node){
-		NodeSplay<T> aux = node.getLeft();
-		node.setLeft(aux.getRight());
-		aux.setRight(node);
-		return aux;
-	}
-
-	private NodeSplay<T> splay(NodeSplay<T> node, int key){
-		if(node == null) return null;
-		if(node.getKey() == key) return node;
-		if(node.getKey() > key){
-			if(node.getLeft() != null){
-				node.setLeft(splay(node.getLeft(), key));
-				node = rightRotation(node);
+public class TreeSplay <T extends Comparable<T>, Info>{
+	private NodeSplay<T, Info> raiz = null;
+	
+	private NodeSplay<T, Info> splay(NodeSplay<T, Info> raiz, T chave){
+		if(raiz == null) return null;
+		int cmp = chave.compareTo(raiz.getChave());
+		if(cmp == 0) return raiz;
+		else if(cmp == 1){
+			if(raiz.getEsq() != null){
+				raiz.setEsq(splay(raiz.getEsq(), chave));
+				raiz = rsDireita(raiz);
 			}
-		}else if(node.getKey() < key){
-			if(node.getRight() != null){
-				node.setRight(splay(node.getRight(), key));
-				node = leftRotation(node);
+			return raiz;
+		}else{
+			if(raiz.getDir() != null){
+				raiz.setDir(splay(raiz.getDir(), chave));
+				raiz = rsEsquerda(raiz);
 			}
-		}
-
-		return node;
-	}
-
-	public T get(int key){
-		root = splay(root, key);
-		if(root.getKey() == key) return root.getInfo();
-		else return null;
-	}
-
-	public void insert(int key, T info){
-		if(root == null)
-			root = new NodeSplay<T>(key, info);
-		if(this.get(key) == null){
-			NodeSplay<T> node = new NodeSplay<T>(key, info);
-			if(root.getKey() < node.getKey()){
-				node.setLeft(root);
-				node.setRight(root.getRight());
-				this.root = node;
-			}else{
-				node.setLeft(root.getLeft());
-				node.setRight(root);
-				this.root = node;
-			}
+			return raiz;
 		}
 	}
+	
+	public NodeSplay<T, Info> busca(T chave){
+		this.raiz = splay(this.raiz, chave);
+		if(this.raiz != null && this.raiz.getChave() == chave) return this.raiz;
+		return null;
+	}
 
-	public void remove(int key){
-		if(this.get(key) != null){
-			if(root.getKey() == key){
-				root.setLeft(splay(root.getLeft(), key));
-				root.getLeft().setRight(root);
-				root = root.getLeft();
-				root.setRight(root.getRight().getRight());
+	public void inserir(T chave){
+		raiz = splay(raiz, chave);
+		if(raiz != null && chave.compareTo(raiz.getChave()) == 0) return;
+		if(raiz == null){
+			raiz = new NodeSplay<T, Info>(chave);
+		}else{
+			int cmp = chave.compareTo(raiz.getChave());
+			if(cmp > 0){
+				NodeSplay<T, Info> aux = new NodeSplay<T, Info>(chave);
+				aux.setDir(raiz);
+				aux.getDir().setEsq(null);
+				aux.setEsq(raiz.getEsq());
+				raiz = aux;
 			}else{
-				root = splay(root, key);
+				NodeSplay<T, Info> aux = new NodeSplay<T, Info>(chave);
+				aux.setEsq(raiz);
+				aux.getEsq().setDir(null);
+				aux.setDir(raiz.getDir());
+				raiz = aux;
 			}
 		}
 	}
 	
+	NodeSplay<T, Info> insert_r(NodeSplay<T, Info> no, T chave){
+		if(no == null)
+			return new NodeSplay<T, Info>(chave);
+		int cmp = chave.compareTo(no.getChave());
+		if(cmp == 1){
+			no.setDir(insert_r(no.getDir(), chave));
+		}else if(cmp == -1){
+			no.setEsq(insert_r(no.getEsq(), chave));
+		}
+		return no;
+	}
+	
+	
+	public void remover(T chave){
+		this.raiz = splay(this.raiz, chave);
+		if(this.raiz == null || this.raiz.getChave() != chave) return;
+		NodeSplay<T, Info> aux = splay(this.raiz.getEsq(), chave);
+		if(raiz.getDir() != null && aux != null) aux.setDir(raiz.getDir());
+		raiz = aux;
+	}
+	
+	NodeSplay<T, Info> rsDireita(NodeSplay<T, Info> no){
+		NodeSplay<T, Info> aux = no.getEsq();
+		no.setEsq(no.getEsq().getDir());
+		aux.setDir(no);
+		return aux;
+	}
+	
+	NodeSplay<T, Info> rsEsquerda(NodeSplay<T, Info> no){
+		NodeSplay<T, Info> aux = no.getDir();
+		no.setDir(no.getDir().getEsq());
+		aux.setEsq(no);
+		return aux;
+	}
+		
 }
