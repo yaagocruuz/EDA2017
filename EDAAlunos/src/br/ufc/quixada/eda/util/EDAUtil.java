@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
+import VeiculosFinal.Veiculos;
 import br.ufc.quixada.eda.grafo.Aresta;
 import br.ufc.quixada.eda.grafo.Grafo;
 import br.ufc.quixada.eda.grafo.ListaAdjacencia;
@@ -35,12 +36,19 @@ public class EDAUtil {
      * @return
      * @throws IOException
      */
-    public static List<Operacao> getOperacoes(String path) throws IOException {
-        List<Operacao> operacoes = new ArrayList<Operacao>();
-        Scanner scanner = new Scanner(new FileReader(path)).useDelimiter(" |\r\n");	
-		while (scanner.hasNext())
-			operacoes.add(new Operacao(scanner.next(), scanner.nextInt(), scanner.nextInt()));
-			
+    public static List<Veiculos> getOperacoes(String path) throws IOException {
+        List<Veiculos> operacoes = new ArrayList<Veiculos>();
+        Scanner scanner = new Scanner(new FileReader(path)).useDelimiter(", |\r\n");
+        int k = 0;
+		while (scanner.hasNext()){
+			try{
+				k++;
+				operacoes.add(new Veiculos(scanner.next().substring(6), scanner.next().substring(7), scanner.next().substring(4), scanner.next().substring(8), scanner.next().substring(6), scanner.next().substring(4)));
+			}catch(Exception e){
+				e.printStackTrace();
+			    System.out.println(k);
+			}
+		}
 		scanner.close();
         return operacoes;
     }
