@@ -1,5 +1,5 @@
 package br.ufc.quixada.eda.util;
 
 public interface EDAConstants {
-	String caminhoPasta = System.getProperty("user.dir") + "/Instancias/instancesALM/";
+	String caminhoPasta = System.getProperty("user.dir") + "/Instancias/instanciasArvores/";
 }
