@@ -1,46 +1,47 @@
 package br.ufc.quixada.eda.splay;
 
-public class NodeSplay<T> {
-	private NodeSplay<T> left, right;
-	private int key;
-	private T info;
+public class NodeSplay <T, Info> {
 	
-	public NodeSplay(int key, T info){
-		this.key = key;
-		this.info = info;
-		this.left = null;
-		this.right = null;
+	private T chave;
+	private NodeSplay<T, Info> esq;
+	private NodeSplay<T, Info> dir;
+	private Info info;
+	
+	public NodeSplay(T chave){
+		this.chave = chave;
+		this.esq = null;
+		this.dir = null;
 	}
 
-	public NodeSplay<T> getLeft() {
-		return left;
+	public T getChave() {
+		return chave;
 	}
 
-	public void setLeft(NodeSplay<T> left) {
-		this.left = left;
+	public void setChave(T chave) {
+		this.chave = chave;
 	}
 
-	public NodeSplay<T> getRight() {
-		return right;
+	public NodeSplay<T, Info> getEsq() {
+		return esq;
 	}
 
-	public void setRight(NodeSplay<T> right) {
-		this.right = right;
+	public void setEsq(NodeSplay<T, Info> esq) {
+		this.esq = esq;
 	}
 
-	public int getKey() {
-		return key;
+	public NodeSplay<T, Info> getDir() {
+		return dir;
 	}
 
-	public void setKey(int key) {
-		this.key = key;
+	public void setDir(NodeSplay<T, Info> dir) {
+		this.dir = dir;
 	}
 
-	public T getInfo() {
+	public Info getInfo() {
 		return info;
 	}
 
-	public void setInfo(T info) {
+	public void setInfo(Info info) {
 		this.info = info;
 	}
 }
